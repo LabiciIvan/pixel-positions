@@ -1,0 +1,48 @@
+services:
+  pixel-positions:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pixel_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - pixel-db
+    networks:
+      - laravel
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  pixel-db:
+    image: mysql:8.0
+    container_name: pixel_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - laravel
+
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    container_name: pixel_node
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    command: tail -f /dev/null
+
+volumes:
+  db_data:
+
+networks:
+  laravel:
+    driver: bridge
