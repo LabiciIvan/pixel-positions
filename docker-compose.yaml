@@ -30,15 +30,18 @@ services:
     networks:
       - laravel
 
-  node:
-    build:
-      context: .
-      dockerfile: Dockerfile.node
-    container_name: pixel_node
-    volumes:
-      - ./:/var/www/html
-    working_dir: /var/www/html
-    command: tail -f /dev/null
+  # node:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.node
+  #   container_name: pixel_node
+  #   volumes:
+  #     - ./:/var/www/html
+  #   working_dir: /var/www/html
+  #   command: tail -f /dev/null
+  #   ports:
+  #     - "5173:5173"
+
 
 volumes:
   db_data:
